@@ -54,7 +54,7 @@ class _LoginWidgetState extends State<LoginWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 40.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 50.0, 0.0, 40.0),
                   child: Text(
                     'Log in to your account',
                     style: FlutterFlowTheme.of(context).bodyMedium.override(
@@ -240,15 +240,45 @@ class _LoginWidgetState extends State<LoginWidget> {
                   ),
                 ),
                 const Spacer(),
-                wrapWithModel(
-                  model: _model.buttonModel1,
-                  updateCallback: () => setState(() {}),
-                  child: const ButtonWidget(),
-                ),
-                wrapWithModel(
-                  model: _model.buttonModel2,
-                  updateCallback: () => setState(() {}),
-                  child: const ButtonWidget(),
+                Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      splashColor: Colors.transparent,
+                      focusColor: Colors.transparent,
+                      hoverColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      onTap: () async {
+                        context.pushNamed('Home');
+                      },
+                      child: wrapWithModel(
+                        model: _model.buttonModel,
+                        updateCallback: () => setState(() {}),
+                        child: ButtonWidget(
+                          title: 'Log in',
+                          color: FlutterFlowTheme.of(context).primary,
+                          elevation: 0,
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: const AlignmentDirectional(0.0, 0.0),
+                      child: Padding(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
+                            0.0, 10.0, 0.0, 20.0),
+                        child: Text(
+                          'Don\'t have an account? Sign up',
+                          style:
+                              FlutterFlowTheme.of(context).bodyMedium.override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

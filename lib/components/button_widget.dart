@@ -6,7 +6,18 @@ import 'button_model.dart';
 export 'button_model.dart';
 
 class ButtonWidget extends StatefulWidget {
-  const ButtonWidget({super.key});
+  const ButtonWidget({
+    super.key,
+    required this.title,
+    this.color,
+    this.textColor,
+    this.elevation,
+  });
+
+  final String? title;
+  final Color? color;
+  final Color? textColor;
+  final int? elevation;
 
   @override
   State<ButtonWidget> createState() => _ButtonWidgetState();
@@ -37,27 +48,27 @@ class _ButtonWidgetState extends State<ButtonWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 10.0, 10.0),
+      padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
       child: FFButtonWidget(
         onPressed: () {
           print('Button pressed ...');
         },
-        text: 'Sign Up',
+        text: widget.title!,
         options: FFButtonOptions(
           width: double.infinity,
           height: 46.0,
           padding: const EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
           iconPadding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-          color: FlutterFlowTheme.of(context).primary,
+          color: widget.color,
           textStyle: FlutterFlowTheme.of(context).titleSmall.override(
                 fontFamily: 'Readex Pro',
-                color: Colors.white,
+                color: widget.textColor,
                 letterSpacing: 0.0,
               ),
-          elevation: 3.0,
+          elevation: widget.elevation?.toDouble(),
           borderSide: const BorderSide(
             color: Colors.transparent,
-            width: 1.0,
+            width: 0.0,
           ),
           borderRadius: BorderRadius.circular(8.0),
         ),

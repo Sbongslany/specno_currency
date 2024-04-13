@@ -25,15 +25,12 @@ class RegisterModel extends FlutterFlowModel<RegisterWidget> {
   late bool passwordVisibility;
   String? Function(BuildContext, String?)? textController3Validator;
   // Model for button component.
-  late ButtonModel buttonModel1;
-  // Model for button component.
-  late ButtonModel buttonModel2;
+  late ButtonModel buttonModel;
 
   @override
   void initState(BuildContext context) {
     passwordVisibility = false;
-    buttonModel1 = createModel(context, () => ButtonModel());
-    buttonModel2 = createModel(context, () => ButtonModel());
+    buttonModel = createModel(context, () => ButtonModel());
   }
 
   @override
@@ -48,7 +45,6 @@ class RegisterModel extends FlutterFlowModel<RegisterWidget> {
     textFieldFocusNode3?.dispose();
     textController3?.dispose();
 
-    buttonModel1.dispose();
-    buttonModel2.dispose();
+    buttonModel.dispose();
   }
 }

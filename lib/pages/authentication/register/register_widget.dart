@@ -59,7 +59,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 50.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 50.0, 0.0, 50.0),
                   child: Text(
                     'Create an account',
                     style: FlutterFlowTheme.of(context).bodyMedium.override(
@@ -350,15 +350,36 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                   ),
                 ),
                 const Spacer(),
-                wrapWithModel(
-                  model: _model.buttonModel1,
-                  updateCallback: () => setState(() {}),
-                  child: const ButtonWidget(),
-                ),
-                wrapWithModel(
-                  model: _model.buttonModel2,
-                  updateCallback: () => setState(() {}),
-                  child: const ButtonWidget(),
+                Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    wrapWithModel(
+                      model: _model.buttonModel,
+                      updateCallback: () => setState(() {}),
+                      child: ButtonWidget(
+                        title: 'Sign Up',
+                        color: FlutterFlowTheme.of(context).primary,
+                        elevation: 0,
+                      ),
+                    ),
+                    Align(
+                      alignment: const AlignmentDirectional(0.0, 0.0),
+                      child: Padding(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
+                            0.0, 10.0, 0.0, 20.0),
+                        child: Text(
+                          'Already have an account? Log in',
+                          style:
+                              FlutterFlowTheme.of(context).bodyMedium.override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
