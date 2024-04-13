@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "85552668643",
+    "project_id": "specno-currency",
+    "storage_bucket": "specno-currency.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:85552668643:android:82a02fa67e5639ed19cad6",
+        "android_client_info": {
+          "package_name": "com.mycompany.specnocurrency"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArCM6O8T3pFjEzQnMX4aD2y0RJ6HBDs_I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
