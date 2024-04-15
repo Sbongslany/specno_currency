@@ -1,8 +1,8 @@
 import '/flutter_flow/flutter_flow_util.dart';
-import 'card21w_icon_widget.dart' show Card21wIconWidget;
+import 'top_currency_card_widget.dart' show TopCurrencyCardWidget;
 import 'package:flutter/material.dart';
 
-class Card21wIconModel extends FlutterFlowModel<Card21wIconWidget> {
+class TopCurrencyCardModel extends FlutterFlowModel<TopCurrencyCardWidget> {
   @override
   void initState(BuildContext context) {}
 

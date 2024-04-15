@@ -1,7 +1,10 @@
-import '/components/button_widget.dart';
+import '/auth/firebase_auth/auth_util.dart';
+import '/backend/api_requests/api_calls.dart';
+import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
 import 'package:flutter/material.dart';
 import 'register_model.dart';
@@ -24,14 +27,14 @@ class _RegisterWidgetState extends State<RegisterWidget> {
     super.initState();
     _model = createModel(context, () => RegisterModel());
 
-    _model.textController1 ??= TextEditingController();
-    _model.textFieldFocusNode1 ??= FocusNode();
+    _model.fullnameController ??= TextEditingController();
+    _model.fullnameFocusNode ??= FocusNode();
 
-    _model.textController2 ??= TextEditingController();
-    _model.textFieldFocusNode2 ??= FocusNode();
+    _model.emailAddressController ??= TextEditingController();
+    _model.emailAddressFocusNode ??= FocusNode();
 
-    _model.textController3 ??= TextEditingController();
-    _model.textFieldFocusNode3 ??= FocusNode();
+    _model.passwordController ??= TextEditingController();
+    _model.passwordFocusNode ??= FocusNode();
   }
 
   @override
@@ -84,8 +87,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                 Padding(
                   padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 20.0),
                   child: TextFormField(
-                    controller: _model.textController1,
-                    focusNode: _model.textFieldFocusNode1,
+                    controller: _model.fullnameController,
+                    focusNode: _model.fullnameFocusNode,
                     autofocus: false,
                     textCapitalization: TextCapitalization.words,
                     textInputAction: TextInputAction.next,
@@ -139,7 +142,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                           letterSpacing: 0.0,
                         ),
                     validator:
-                        _model.textController1Validator.asValidator(context),
+                        _model.fullnameControllerValidator.asValidator(context),
                   ),
                 ),
                 Padding(
@@ -156,8 +159,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                 Padding(
                   padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 20.0),
                   child: TextFormField(
-                    controller: _model.textController2,
-                    focusNode: _model.textFieldFocusNode2,
+                    controller: _model.emailAddressController,
+                    focusNode: _model.emailAddressFocusNode,
                     autofocus: false,
                     textCapitalization: TextCapitalization.words,
                     textInputAction: TextInputAction.next,
@@ -213,8 +216,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                           letterSpacing: 0.0,
                         ),
                     keyboardType: TextInputType.emailAddress,
-                    validator:
-                        _model.textController2Validator.asValidator(context),
+                    validator: _model.emailAddressControllerValidator
+                        .asValidator(context),
                   ),
                 ),
                 Padding(
@@ -230,35 +233,63 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                 ),
                 Padding(
                   padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 20.0),
-                  child: FlutterFlowDropDown<String>(
-                    controller: _model.dropDownValueController ??=
-                        FormFieldController<String>(null),
-                    options: const ['Option 1'],
-                    onChanged: (val) =>
-                        setState(() => _model.dropDownValue = val),
-                    width: double.infinity,
-                    height: 56.0,
-                    textStyle: FlutterFlowTheme.of(context).bodyMedium.override(
-                          fontFamily: 'Readex Pro',
-                          letterSpacing: 0.0,
+                  child: FutureBuilder<ApiCallResponse>(
+                    future: GetCurrenciesCall.call(),
+                    builder: (context, snapshot) {
+                      // Customize what your widget looks like when it's loading.
+                      if (!snapshot.hasData) {
+                        return Center(
+                          child: SizedBox(
+                            width: 50.0,
+                            height: 50.0,
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                FlutterFlowTheme.of(context).primary,
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+                      final countryGetCurrenciesResponse = snapshot.data!;
+                      return FlutterFlowDropDown<String>(
+                        controller: _model.countryValueController ??=
+                            FormFieldController<String>(null),
+                        options: (getJsonField(
+                          countryGetCurrenciesResponse.jsonBody,
+                          r'''$.data''',
+                          true,
+                        ) as List)
+                            .map<String>((s) => s.toString())
+                            .toList(),
+                        onChanged: (val) =>
+                            setState(() => _model.countryValue = val),
+                        width: double.infinity,
+                        height: 56.0,
+                        textStyle:
+                            FlutterFlowTheme.of(context).bodyMedium.override(
+                                  fontFamily: 'Readex Pro',
+                                  letterSpacing: 0.0,
+                                ),
+                        hintText: 'Select',
+                        icon: Icon(
+                          Icons.keyboard_arrow_down_rounded,
+                          color: FlutterFlowTheme.of(context).secondaryText,
+                          size: 24.0,
                         ),
-                    hintText: 'Select',
-                    icon: Icon(
-                      Icons.keyboard_arrow_down_rounded,
-                      color: FlutterFlowTheme.of(context).secondaryText,
-                      size: 24.0,
-                    ),
-                    fillColor: FlutterFlowTheme.of(context).secondaryBackground,
-                    elevation: 2.0,
-                    borderColor: FlutterFlowTheme.of(context).alternate,
-                    borderWidth: 2.0,
-                    borderRadius: 8.0,
-                    margin:
-                        const EdgeInsetsDirectional.fromSTEB(16.0, 4.0, 16.0, 4.0),
-                    hidesUnderline: true,
-                    isOverButton: true,
-                    isSearchable: false,
-                    isMultiSelect: false,
+                        fillColor:
+                            FlutterFlowTheme.of(context).secondaryBackground,
+                        elevation: 2.0,
+                        borderColor: FlutterFlowTheme.of(context).alternate,
+                        borderWidth: 2.0,
+                        borderRadius: 8.0,
+                        margin: const EdgeInsetsDirectional.fromSTEB(
+                            16.0, 4.0, 16.0, 4.0),
+                        hidesUnderline: true,
+                        isOverButton: true,
+                        isSearchable: false,
+                        isMultiSelect: false,
+                      );
+                    },
                   ),
                 ),
                 Padding(
@@ -275,8 +306,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                 Padding(
                   padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 20.0),
                   child: TextFormField(
-                    controller: _model.textController3,
-                    focusNode: _model.textFieldFocusNode3,
+                    controller: _model.passwordController,
+                    focusNode: _model.passwordFocusNode,
                     autofocus: false,
                     textCapitalization: TextCapitalization.words,
                     textInputAction: TextInputAction.done,
@@ -346,7 +377,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                           letterSpacing: 0.0,
                         ),
                     validator:
-                        _model.textController3Validator.asValidator(context),
+                        _model.passwordControllerValidator.asValidator(context),
                   ),
                 ),
                 const Spacer(),
@@ -354,20 +385,57 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    wrapWithModel(
-                      model: _model.buttonModel,
-                      updateCallback: () => setState(() {}),
-                      child: ButtonWidget(
-                        title: 'Sign Up',
+                    FFButtonWidget(
+                      onPressed: () async {
+                        GoRouter.of(context).prepareAuthEvent();
+
+                        final user = await authManager.createAccountWithEmail(
+                          context,
+                          _model.emailAddressController.text,
+                          _model.passwordController.text,
+                        );
+                        if (user == null) {
+                          return;
+                        }
+
+                        await UsersRecord.collection
+                            .doc(user.uid)
+                            .update(createUsersRecordData(
+                              country: _model.countryValue,
+                              uid: '',
+                              displayName: _model.fullnameController.text,
+                            ));
+
+                        context.goNamedAuth('Home', context.mounted);
+                      },
+                      text: 'Sign Up',
+                      options: FFButtonOptions(
+                        width: double.infinity,
+                        height: 46.0,
+                        padding: const EdgeInsetsDirectional.fromSTEB(
+                            24.0, 0.0, 24.0, 0.0),
+                        iconPadding:
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                         color: FlutterFlowTheme.of(context).primary,
-                        elevation: 0,
+                        textStyle:
+                            FlutterFlowTheme.of(context).titleSmall.override(
+                                  fontFamily: 'Readex Pro',
+                                  color: Colors.white,
+                                  letterSpacing: 0.0,
+                                ),
+                        elevation: 3.0,
+                        borderSide: const BorderSide(
+                          color: Colors.transparent,
+                          width: 1.0,
+                        ),
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
                     Align(
                       alignment: const AlignmentDirectional(0.0, 0.0),
                       child: Padding(
                         padding: const EdgeInsetsDirectional.fromSTEB(
-                            0.0, 10.0, 0.0, 20.0),
+                            0.0, 10.0, 0.0, 30.0),
                         child: Text(
                           'Already have an account? Log in',
                           style:

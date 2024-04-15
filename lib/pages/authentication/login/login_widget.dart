@@ -1,3 +1,4 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/components/button_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -22,11 +23,11 @@ class _LoginWidgetState extends State<LoginWidget> {
     super.initState();
     _model = createModel(context, () => LoginModel());
 
-    _model.textController1 ??= TextEditingController();
-    _model.textFieldFocusNode1 ??= FocusNode();
+    _model.emailController ??= TextEditingController();
+    _model.emailFocusNode ??= FocusNode();
 
-    _model.textController2 ??= TextEditingController();
-    _model.textFieldFocusNode2 ??= FocusNode();
+    _model.passwordController ??= TextEditingController();
+    _model.passwordFocusNode ??= FocusNode();
   }
 
   @override
@@ -79,8 +80,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                 Padding(
                   padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 20.0),
                   child: TextFormField(
-                    controller: _model.textController1,
-                    focusNode: _model.textFieldFocusNode1,
+                    controller: _model.emailController,
+                    focusNode: _model.emailFocusNode,
                     autofocus: false,
                     textCapitalization: TextCapitalization.words,
                     textInputAction: TextInputAction.next,
@@ -137,7 +138,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                         ),
                     keyboardType: TextInputType.emailAddress,
                     validator:
-                        _model.textController1Validator.asValidator(context),
+                        _model.emailControllerValidator.asValidator(context),
                   ),
                 ),
                 Padding(
@@ -154,8 +155,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                 Padding(
                   padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 20.0),
                   child: TextFormField(
-                    controller: _model.textController2,
-                    focusNode: _model.textFieldFocusNode2,
+                    controller: _model.passwordController,
+                    focusNode: _model.passwordFocusNode,
                     autofocus: false,
                     textCapitalization: TextCapitalization.words,
                     textInputAction: TextInputAction.done,
@@ -225,7 +226,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                           letterSpacing: 0.0,
                         ),
                     validator:
-                        _model.textController2Validator.asValidator(context),
+                        _model.passwordControllerValidator.asValidator(context),
                   ),
                 ),
                 Align(
@@ -244,22 +245,27 @@ class _LoginWidgetState extends State<LoginWidget> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    InkWell(
-                      splashColor: Colors.transparent,
-                      focusColor: Colors.transparent,
-                      hoverColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      onTap: () async {
-                        context.pushNamed('Home');
-                      },
-                      child: wrapWithModel(
-                        model: _model.buttonModel,
-                        updateCallback: () => setState(() {}),
-                        child: ButtonWidget(
-                          title: 'Log in',
-                          color: FlutterFlowTheme.of(context).primary,
-                          elevation: 0,
-                        ),
+                    wrapWithModel(
+                      model: _model.buttonModel,
+                      updateCallback: () => setState(() {}),
+                      child: ButtonWidget(
+                        title: 'Log in',
+                        color: FlutterFlowTheme.of(context).primary,
+                        elevation: 0,
+                        submitButton: () async {
+                          GoRouter.of(context).prepareAuthEvent();
+
+                          final user = await authManager.signInWithEmail(
+                            context,
+                            _model.emailController.text,
+                            _model.passwordController.text,
+                          );
+                          if (user == null) {
+                            return;
+                          }
+
+                          context.goNamedAuth('Home', context.mounted);
+                        },
                       ),
                     ),
                     Align(
@@ -267,14 +273,24 @@ class _LoginWidgetState extends State<LoginWidget> {
                       child: Padding(
                         padding: const EdgeInsetsDirectional.fromSTEB(
                             0.0, 10.0, 0.0, 20.0),
-                        child: Text(
-                          'Don\'t have an account? Sign up',
-                          style:
-                              FlutterFlowTheme.of(context).bodyMedium.override(
-                                    fontFamily: 'Readex Pro',
-                                    letterSpacing: 0.0,
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                        child: InkWell(
+                          splashColor: Colors.transparent,
+                          focusColor: Colors.transparent,
+                          hoverColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          onTap: () async {
+                            context.pushNamed('Register');
+                          },
+                          child: Text(
+                            'Don\'t have an account? Sign up',
+                            style: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  fontFamily: 'Readex Pro',
+                                  letterSpacing: 0.0,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                          ),
                         ),
                       ),
                     ),

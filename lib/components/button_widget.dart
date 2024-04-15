@@ -12,12 +12,14 @@ class ButtonWidget extends StatefulWidget {
     this.color,
     this.textColor,
     this.elevation,
+    this.submitButton,
   });
 
   final String? title;
   final Color? color;
   final Color? textColor;
   final int? elevation;
+  final Future Function()? submitButton;
 
   @override
   State<ButtonWidget> createState() => _ButtonWidgetState();
